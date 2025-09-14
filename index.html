@@ -166,7 +166,7 @@
         </section>
 
         <section id="toolkit" class="mb-24 pt-8">
-            <h3 class="text-3xl font-bold text-center mb-2 section-title">Part III: Applying The Agent Formal Model Toolkit</h3>
+            <h3 class="text-3xl font-bold text-center mb-2 section-title">Part III: The Measurement Toolkit</h3>
              <p class="text-center max-w-2xl mx-auto mb-12 text-slate-600">
                 This framework integrates formal logic as a practical toolkit for ethical reasoning. Explore the different tools and their applications below.
             </p>
@@ -213,11 +213,12 @@
         <section id="cartography" class="pt-8">
             <h3 class="text-3xl font-bold text-center mb-2 section-title">Part IV: Applied Integration - Ethical Cartography</h3>
             <p class="text-center max-w-2xl mx-auto mb-12 text-slate-600">
-                Ethical Cartography is the unified process in action. It's about mapping a moral territory and designing navigation routes, not just arguing about destinations. Let's apply it to the challenge of developing AI Ethics Guidelines.
+                Ethical Cartography is the unified process in action. It's about mapping a moral territory and designing navigation routes, not just arguing about destinations. Let's apply it to the challenge of developing AI Ethics Guidelines in this interactive lab.
             </p>
             <div class="bg-white rounded-xl shadow-lg p-8">
                  <div class="flex flex-col md:flex-row gap-8">
                     <div class="w-full md:w-1/3 space-y-2">
+                        <p class="font-semibold text-sm text-slate-600 mb-2">1. Click through the steps to build your guideline:</p>
                         <div id="step-1" class="step-item interactive-card p-3 rounded-lg cursor-pointer active">
                             <h5 class="step-title font-semibold">1. Cross-Scale Analysis</h5>
                         </div>
@@ -236,10 +237,28 @@
                          <div id="step-6" class="step-item interactive-card p-3 rounded-lg cursor-pointer">
                              <h5 class="step-title font-semibold">6. Game-Theoretic Validation</h5>
                         </div>
+                        <button id="reset-sim-btn" class="text-sm text-indigo-500 hover:underline mt-4 w-full text-left">Reset Lab</button>
                     </div>
-                    <div class="w-full md:w-2/3 bg-slate-50 p-6 rounded-lg">
-                        <h4 id="step-detail-title" class="font-bold text-xl mb-2 text-indigo-700"></h4>
-                        <p id="step-detail-text" class="text-slate-600"></p>
+                    <div class="w-full md:w-2/3">
+                        <div class="bg-slate-50 p-6 rounded-lg mb-4">
+                            <h4 id="step-detail-title" class="font-bold text-xl mb-2 text-indigo-700"></h4>
+                            <p id="step-detail-text" class="text-slate-600"></p>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-lg">
+                            <h4 class="font-bold text-lg mb-2">Live AI Guideline</h4>
+                            <div class="mb-4">
+                                <p class="text-sm font-semibold">Guideline Robustness:</p>
+                                <div class="w-full bg-slate-200 rounded-full h-4 mt-1">
+                                    <div id="guideline-progress" class="bg-indigo-600 h-4 rounded-full text-white text-xs flex items-center justify-center transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold">Principles Added:</p>
+                                <ul id="guideline-components" class="list-disc list-inside text-sm text-slate-600 mt-2 space-y-1">
+                                    <li id="no-components-li">No principles added yet.</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                  </div>
             </div>
@@ -343,23 +362,67 @@
 
             // Cartography Steps
             const stepDetails = {
-                '1': { title: '1. Cross-Scale Analysis', text: 'Map the coordination requirements across all levels, from individual developers to international bodies. Identify how actions at one scale impact others.' },
-                '2': { title: '2. PRF Proposition Development', text: 'Instead of abstract principles like "AI should be fair," define the specific capabilities development teams must have in their Belief, Rule, and other PRF systems to detect and mitigate bias.' },
-                '3': { title: '3. Strategic Analysis (ATL)', text: 'Use Alternating-Time Temporal Logic to ask: "Does humanity have coalition strategies to ensure ethical AI development, even with conflicting interests and external pressures?" This moves from hope to strategy.' },
-                '4': { title: '4. Agency Assessment (STIT)', text: 'Use STIT logic to identify which specific agents (e.g., a lead engineer, a safety board) have the actual power to "see to it that" an ethical constraint is implemented, clarifying responsibility.' },
-                '5': { title: '5. Temporal Coherence Check (ATCF)', text: 'Assess whether the proposed guidelines will enhance or fragment the long-term ethical coherence of the stakeholders. Will these rules support authentic development or force inauthentic compliance?' },
-                '6': { title: '6. Game-Theoretic Validation', text: 'Test the proposed guidelines in a simulated "game" against serious challenges (e.g., market competition, national security concerns) to ensure they form a "winning strategy" for ethical AI.' }
+                '1': { title: '1. Cross-Scale Analysis', text: 'Map the coordination requirements across all levels, from individual developers to international bodies. Identify how actions at one scale impact others.', component: 'Guideline must be applicable across individual, corporate, and state-actor scales.' },
+                '2': { title: '2. PRF Proposition Development', text: 'Instead of abstract principles like "AI should be fair," define the specific capabilities development teams must have in their Belief, Rule, and other PRF systems to detect and mitigate bias.', component: 'Development teams must possess validated capabilities for bias detection and stakeholder impact evaluation.' },
+                '3': { title: '3. Strategic Analysis (ATL)', text: 'Use Alternating-Time Temporal Logic to ask: "Does humanity have coalition strategies to ensure ethical AI development, even with conflicting interests and external pressures?" This moves from hope to strategy.', component: 'Guideline must include strategies that are robust against predictable opposition and market pressures.' },
+                '4': { title: '4. Agency Assessment (STIT)', text: 'Use STIT logic to identify which specific agents (e.g., a lead engineer, a safety board) have the actual power to "see to it that" an ethical constraint is implemented, clarifying responsibility.', component: 'Specific roles with clear, auditable responsibility for ethical compliance must be defined.' },
+                '5': { title: '5. Temporal Coherence Check (ATCF)', text: 'Assess whether the proposed guidelines will enhance or fragment the long-term ethical coherence of the stakeholders. Will these rules support authentic development or force inauthentic compliance?', component: 'The guideline must support the long-term, authentic ethical development of its users and developers.' },
+                '6': { title: '6. Game-Theoretic Validation', text: 'Test the proposed guidelines in a simulated "game" against serious challenges (e.g., market competition, national security concerns) to ensure they form a "winning strategy" for ethical AI.', component: 'The guideline must be validated against adversarial challenges to ensure it is practically resilient.' }
             };
 
             const stepItems = document.querySelectorAll('.step-item');
             const stepDetailTitle = document.getElementById('step-detail-title');
             const stepDetailText = document.getElementById('step-detail-text');
+            const guidelineProgress = document.getElementById('guideline-progress');
+            const guidelineComponents = document.getElementById('guideline-components');
+            const noComponentsLi = document.getElementById('no-components-li');
+            const resetSimBtn = document.getElementById('reset-sim-btn');
+
+            let simState = {
+                completedSteps: [],
+                score: 0
+            };
 
             function updateStepView(step) {
                  stepItems.forEach(item => item.classList.remove('active'));
                  document.getElementById(`step-${step}`).classList.add('active');
                  stepDetailTitle.innerText = stepDetails[step].title;
                  stepDetailText.innerText = stepDetails[step].text;
+
+                 if (!simState.completedSteps.includes(step)) {
+                     simState.completedSteps.push(step);
+                     simState.score += Math.round(100 / 6);
+                     if(simState.completedSteps.length === 6) simState.score = 100;
+                     
+                     updateSimulationUI();
+                 }
+            }
+
+            function updateSimulationUI() {
+                guidelineProgress.style.width = `${simState.score}%`;
+                guidelineProgress.innerText = `${simState.score}%`;
+
+                if (noComponentsLi) noComponentsLi.style.display = 'none';
+                
+                guidelineComponents.innerHTML = ''; // Clear previous
+                simState.completedSteps.forEach(stepKey => {
+                    const li = document.createElement('li');
+                    li.textContent = stepDetails[stepKey].component;
+                    guidelineComponents.appendChild(li);
+                });
+            }
+            
+            function resetSimulation() {
+                simState.completedSteps = [];
+                simState.score = 0;
+                guidelineComponents.innerHTML = '';
+                if (noComponentsLi) {
+                    guidelineComponents.appendChild(noComponentsLi);
+                    noComponentsLi.style.display = 'list-item';
+                }
+                updateStepView('1');
+                guidelineProgress.style.width = `0%`;
+                guidelineProgress.innerText = ``;
             }
 
             stepItems.forEach(item => {
@@ -368,7 +431,10 @@
                     updateStepView(step);
                 });
             });
-            updateStepView('1');
+            
+            resetSimBtn.addEventListener('click', resetSimulation);
+            
+            resetSimulation();
         });
     </script>
 </body>
